@@ -1,0 +1,9 @@
+#MainWindow, #Form {
+    border-radius: 20px;
+    }
+
+QPushButton {
+    border: none;
+    border-image: url('D:\\Workspace\Projects\sdk_alpha\Styles') 0 stretch stretch;
+}
+
