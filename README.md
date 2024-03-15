@@ -32,59 +32,134 @@ The HAWK SDK is avialable for  NVIDIA® Jetson platform for now. We provide scri
 ### Download and Install the SDK
 
 To use the HAWK's cameras on NVIDIA® Jetson platforms, you need to:
-- Setup JetPack
-- Install the HAWK SDK for  NVIDIA® Jetson
+- [Setup JetPack](#setup-jetpack) 
+- [Install the HAWK SDK for  NVIDIA® Jetson](#install-the-hawk-sdk-for-nvidia®-jetson)
 
 #### Setup Jetpack
-To use a NVIDIA® Jetson board, it is necessary to flash Jetpack, NVIDIA®'s proprietary system for Jetson. We recommend using NVIDIA® SDK Manager to flash the Jetpack **5.1.1** version. There is some steps and tips you should follow.
+To use a NVIDIA® Jetson board, it is necessary to flash Jetpack, NVIDIA®'s proprietary system for Jetson. We recommend using NVIDIA® SDK Manager to flash the Jetpack 5.1.1 version. This section will tells how to do, including:
+- 	Preparing Hardware & Software
+-	Flashing Jetson Linux System
+-	Flashing CUDA
 
-1. You can download the NVIDIA® [SDK Manager](https://developer.nvidia.com/sdk-manager) from the Jetpack SDK section on the  NVIDIA® website. While different operating system versions will correspond to different SDK versions Here is a supported OS table from the NVIDIA® website.
-![Support_OS](/resources/Support_OS.png)
+- **Preparing Hardware & Software**<br>
+Before you start, make sure you have prepared the following hardware and software.
+    |||
+    |---|---|
+    |Hardware|NVIDIA JETSON Orin Kit R35.3.1 x 1|
+    |Software|Ubuntu 20.04|
+    ||Python 3.8|
+    ||CUDA Toolkit 11.4|
+    ||TensorRT 8.4.1.5|
+    ||Python setuptools 45.2.0+|
+-  **Flashing Jetson Linux System**
+1.	Download the NVIDIA® [SDK Manager](https://developer.nvidia.com/sdk-manager) from the Jetpack SDK section on the NVIDIA® website. 
+While different operating system versions will correspond to different SDK versions. Here is a supported OS table from the NVIDIA® website.
+![Support-OS](/resources/Support_OS.png)
+2.	Copy the downloaded **sdkmanager_2.0.0-11405_amd64.deb** to the virtual machine.
+3.	Run the following command in current folder.
+```
+# sudo dpkg -i sdkmanager_2.0.0-11405_amd64.deb
+# sdkmanager
+```
+4.	Wait for about 20s. The Nvidia SDK Manager window pops up. Click **LOGIN**.
+![SDKManager_Installation](/resources/SDKManager_Installation.png)
+5.	Log in with your Nvidia account and password. 
+6.	The STEP 01 DEVELOPMENT ENVIRONMENT window appears. Choose as the listed below and click **CONTINUE**.
 
-2. When you have downloaded the SDK manager from the official website, put it into the virtual machine operating system, let's take `ubuntu 20.04` as an example. Open a terminal in the current folder and execute two commands:
+    |||
+    |---|---|
+    |Product Category|Jetson|
+    |System Configuration|	Host Machine|
+    |Jetson |AGX Orin modules|
+    |SDK Version| JetPack5.1.1 (rev.1)|
+
+    ![Flash_step1](/resources/Flash_step1.png)
+
+7.	While entering into STEP 02 DETAILS AND LICENSE, you have the following options.
+
+    |**Options** |	**How to Configure**|
+    |---|---|
+    |Flash Jetson Linux	|Make sure the **Jetson Linux** checkbox is checked.<br> Default status: checked|
+    |Flash CUDA|	Check the **Jetson Runtime Components** checkbox according to your needs. <br>Default status: checked<br> NOTE: If this checkbox is selected, CUDA flashing interface will be automatically displays after flashing Jetson Linux completes.|
+
+    ![Flash_step2](/resources/Flash_step2.png)
+8.	Set the download directory. It is recommended to use the default path. 
+9.	Select **I accept the terms and conditions of the License agreements** and click **CONTINUE**.
+    ![Flash_step3](/resources/Flash_step3.png)
+10.	Reset the Orin as below steps.<br>
+    a. Power on the Orin.<br>
+    b.	Connect the Orin flashing port to the computer via flashing cable.<br>
+    c.	Press and hold **RECOVERY** key on the Orin, then press **RESET** key.<br>
+    d.	Release the **RECOVERY** key. The Orin will enter into flashing mode. <br>
+    e.	If you want to check, run the following command.<br>
+    
     ```
-    sudo dpkg -i sdkmanager_2.0.0-11405_amd64.deb
-    sdkmanager
+    #lsusb
     ```
-    ![SDKManager_Installation](/resources/SDKManager_Installation.png)
 
-3. Wait about 30s after entering the command, the NVIDIA® fllash interface will pop up, click LOGIN to login (please use your own account NVIDIA® to login). After login successfully, the interface will load automatically into STEP 01: select platform and version:System Configuration: Jetson AGX Orin modulesSDK Version: JetPack 5.1.1(rev.1),click CONTINUE.<br>
-![Flash_step1](/resources/Flash_step1.png)<br>
+    **NVIDIA Corp. APX** circled in red box in the following screenshot indicates the Orin has been successfully reset and connected to virtual machine.
+    ![Flash_step4](/resources/Flash_step4.png)
+    f.	For those who don’t do step e, please make sure your device has been successfully connected to virtual machine.
+11.	After the Orin successfully reset, the following window pops up. Please select the Jetson AGX Orin you are using and click OK. The screenshot shown below is an example.
+    ![Flash_step5](/resources/Flash_step5.png)
+12.	Select as listed below and click **Flash**.
 
-4. Then, step 2. Check the "I agree" box and click CONTINUE. Jetson Linux and Jetson Runtime Components are checked by default. Make sure check the CUDA, it's a must for use the HAWK SDK. You can choose your own download path, we recommend using the default path.
-![Flash_step2](/resources/Flash_step2.png)<br>
+    |**Parameter**|	**How to Configure**|
+    |---|---|
+    |OEM Configuration|	Choose **Runtime** in the dropdown list.|
+    |Storage Device|	Make sure its value is **EMMC (default)**.|
 
-5. At this time, Orin will be powered on to reset the operation: Orin powered on, then connected to the computer, press the RECOVERY button on Orin and do not let go and then press the RESET button, and then release the RECOVERY button. Once Orin connect to the Virtual machine, At this time, a pop-up window will appear and enter STEP 03: Select hardware platform. Select the corresponding platform, click OK, and then you need to choose the way to flash. You can use a USB cable to connect Orin to your computer. In the pop-up window, select "Runtime" for the OEM Configuration option and "EMMC (default)" for the Storage Device option. Then, click "Flash" to enter the flashing mode.
-![Flash_step3](/resources/Flash_step3.png)<br>
-![Flash_step5](/resources/Flash_step5.png)<br>
+    ![Flash_step6](/resources/Flash_step6.png)
+13.	The Orin starting flashing. It takes a long time. Wait patiently until the procedure finishes
+    ![Flash_step7](/resources/Flash_step7.png)
 
-6. When the system  start SDK flashing, waiting for the system to complete the flashing (SDK flashing takes a long time, need to wait a long time). After the flashing process is complete, you should start installing components. At this point, Orin will boot up and prompt you to configure the computer. Set up your username and password. Once inside Orin, locate your IP address. In the pop-up window of the SDK Manager, fill in the corresponding information, then click "install" to begin installing the components. <br>
-![Flash_step4](/resources/Flash_step4.png)<br>
-![Flash_step6](/resources/Flash_step6.png)<br>
-6. When the inatallation is finished, it will go to STEP 04: just exit. Completion of flashing.
-![Flash_step7](/resources/Flash_step7.png)<br>
+- **Flashing CUDA**<br>
+After successfully performing the steps in Flashing Jetson Linux System. The Orin will display a window.
+1.	Set account and password and then enter the system.
+2.	Connect a network cable to the Orin and check the IP address.
+![Step 2 - Falshing CUDA](/resources/FalshingCUDA.png)
+3.	The CUDA setting interface appears. Set as below.
+    |**Parameter**	|**How to Configure**|
+    |---|---|
+    |Connection|	Choose Ethernet in the dropdown list.|
+    |IP Address	|Set according to your actual environment.|
+    |Username	|Input according to your actual settings in above Step 1.|
+    |Password	|Input according to your actual settings in above Step 1.|
+
+    The following screenshot is just an example.
+    ![Flash_step8](/resources/Flash_step8.png)
+4.	Click **Install**. 
+5.	After the system successfully connects the Orin, it will start flashing CUDA to the Orin automatically. 
+    ![Flash_step7](/resources/Flash_step7.png)
+6.	Once the CUDA is completely flashed, the following interface STEP 04 SUMMARY FINALIZATION appears automatically. Click **FINISH**.
+    ![Flash_step9](/resources/Flash_step9.png)
 
 #### Install the HAWK SDK for NVIDIA® Jetson
-Please download the entire SDK repository. We provide Python scripts that can assist users in installing the camera drivers and using the SDK. The script file involves two parts: 1) driver installation, and 2) environment configuration setup. 
-1. After downloading the GitHub repository , navigate to the repository directory, open the terminal in the current path and run 
 
-    ```
-    ./Installation_Script.sh
-    ```
-
-    When the following interface appears, it indicates that the installation is successful.
+Please download the entire SDK repository. We provide Python scripts that can assist users in installing the camera drivers and using the SDK. The script file involves two parts: 1) driver installation, and 2) environment configuration setup.
+**Driver Installation**
+1.	Download the GitHub repository.
+2.	Navigate to the repository directory.
+3.	Open the terminal in the current path and run the following script.
+```
+./Installation_Script.sh
+```
+When the following interface appears, it indicates that the installation is successful.
     ![Driver_Installation](/resources/Driver_Installation.png)
 
-2. After downloading the GitHub repository , navigate to the repository directory, open the terminal in the current path and run 
+**Environment Configuration Setup**
+1.	Download the GitHub repository.
+2.	Navigate to the repository directory.
+3.	Open the terminal in the current path and run the following script.
+    > NOTE: 
+For users in mainland China, please connect to VPN (Virtual Private Network) before running the script.
+```
+sudo chmod 777 Environment_Setup.sh
+./Environment_Setup.sh
+```
+When the following interface appears, it indicates that the installation is successful. Make sure you haven't encountered any red error messages. If you have, please rerun the process.
+![Environment_Setup](/resources/Environment_Setup.png)
 
-    ```
-    sudo chmod 777 Environment_Setup.sh
-    ./Environment_Setup.sh
-    ```
-
-    When the following interface appears, it indicates that the installation is successful. Make sure you haven't encountered any red error messages. If you have, please rerun the process.
-    ![Environment_Setup](/resources/Environment_Setup.png)
-    > There is also a reminder for you to note: if you are in mainland China, you need to use a VPN before running this script. If you are not in mainland China, please ignore this reminder.
 ---
 ## **SDK Overview**
 
