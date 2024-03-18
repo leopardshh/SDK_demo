@@ -184,7 +184,7 @@ The HAWK camera mimics the mechanism of human stereoscopic vision. Typically, th
 #### Depth Perception
 Depth perception refers to the capacity to gauge the distance between various objects and visualize the environment in three dimensions. Historically, depth sensors have primarily been effective at short ranges and in indoor environments, which has confined their usage largely to applications like gesture recognition and body movement tracking. The depth sensor feature of HAWK camera:
 - Depth can be captured at ranges up to 1m ~8m
-- Frame rate of depth capture can be as high as 60 FPS
+- Frame rate of depth capture can be as high as 30 FPS
 - Field of view(FOV) : 147.5°diagonal, 121.5°horizontal, 73.5°vertical
 
 #### Depth Map
